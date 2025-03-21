@@ -20,11 +20,17 @@ router.get('/', async () => {
   }
 })
 
+router.get('/api/auth/check', async ({ auth }) => {
+  return { isAuthenticated: await auth.check() }
+})
+
 router.get('/evenements', [EvenementsController, 'index']).prefix('/api')
 router.get('/evenements/:id', [EvenementsController, 'show']).prefix('/api')
 
 router.post('/register', [AuthController, 'register']).prefix('/api')
 router.post('/login', [AuthController, 'login']).prefix('/api')
+
+router.post('/participations', [ParticipationsController, 'store']).prefix('/api')
 
 router
   .group(() => {
@@ -34,7 +40,6 @@ router
     router.get('/users', [UsersController, 'index'])
 
     router.get('/participations', [ParticipationsController, 'index'])
-    router.post('/participations', [ParticipationsController, 'store'])
 
     router.post('/evenements', [EvenementsController, 'store'])
     router.put('/evenements/:id', [EvenementsController, 'update'])
